@@ -1,31 +1,41 @@
-var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
-var pincel = tela.getContext('2d'); // Váriavel usada para pintar na tela.
-
-// Váriavel que define a posição do objeto.
-var x = 12.5;
-var y = 12.5;
-
-// códigos do teclado
-var esquerda = 37
-var cima = 38
-var direita = 39
-var baixo = 40
-
-// Quantidade de pixel que o objeto se movimenta.
-var taxa = 25;
-
 // função que cria o objeto.
-function desenhaCirculo(x, y, raio) {
+function personagem(posicaox, posicaoy, raio) {
 
     pincel.fillStyle = 'black';
     pincel.beginPath();
-    pincel.arc(x, y, raio, 0, 2 * Math.PI);
+    pincel.arc(posicaox, posicaoy, raio, 0, 2 * Math.PI);
     pincel.fill();
 }
 
+function bomba(xb, yb, raiob) {
+
+    pincel.fillStyle = 'firebrick';
+    pincel.beginPath();
+    pincel.arc(xb, yb, raiob, 0, 2 * Math.PI);
+    pincel.fill();
+}
+
+
+function inimigo(xi, yi, raioi) {
+
+    pincel.fillStyle = 'firebrick';
+    pincel.beginPath();
+    pincel.arc(xi, yi, raioi, 0, 2 * Math.PI);
+    pincel.fill();
+}
+
+function andarInimigo() {
+
+    xi = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
+    yi = Math.floor(Math.random() * tabela);
+
+    
+}
+            
 // função que desenha o grid.
 function limpaTela() {
     var descer = 0; 
+    
     while(descer <=450){
         for(var imp= 0; imp<=450;imp=imp+25){
             pincel.fillStyle = "lightyellow";
@@ -45,28 +55,69 @@ function atualizaTela() {
 
     limpaTela();
    
-    desenhaCirculo(x, y, 10);
+    personagem(posicaox, posicaoy, 10);
+
+    bomba(xb, yb, 10)
+
+    inimigo(xi, yi, 10);
+
+    //andarInimigo();
     
 }
 
-setInterval(atualizaTela, 20); // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
 
 // função que determina pra onde o objeto irá se movimentar.
 function leDoTeclado(evento) {
 
-    if(evento.keyCode == cima) {
-        y = y - taxa;
+    if(evento.keyCode == cima && posicaoy - espacoAndar > 0) {
+        posicaoy = posicaoy - espacoAndar;
 
-    } else if (evento.keyCode == baixo) {
-        y = y + taxa;
+    } else if (evento.keyCode == baixo && posicaoy + espacoAndar < 450) {
+        posicaoy = posicaoy + espacoAndar;
 
-    } else if (evento.keyCode == esquerda) {
-        x = x - taxa;
+    } else if (evento.keyCode == esquerda && posicaox - espacoAndar > 0) {
+        posicaox = posicaox - espacoAndar;
 
-    } else if (evento.keyCode == direita) {
-        x = x + taxa;
+    } else if (evento.keyCode == direita && posicaox + espacoAndar < 450) {
+        posicaox = posicaox + espacoAndar;
+    }
+
+    if(evento.keyCode == espaco){
+        xb = posicaox;
+        yb = posicaoy;
     }
 }
 
+
+
+
+// Váriaveis que define a posição inicial da maçã verde.
+var xi = 412.5;
+var yi = 412.5;
+
+var xb;
+var yb;
+
+var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
+var pincel = tela.getContext('2d'); // Váriavel usada para pintar na tela.
+
+// Váriavel que define a posição do objeto.
+var posicaox = 12.5;
+var posicaoy = 12.5;
+
+// códigos do teclado
+var esquerda = 37;
+var cima = 38;
+var direita = 39;
+var baixo = 40;
+var espaco = 32;
+
+var parede = [];
+// Quantidade de pixel que o objeto se movimenta.
+var espacoAndar = 25;
+
+var tabela = 450;
+
+setInterval(atualizaTela, 400); // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
 
 document.onkeydown = leDoTeclado;
