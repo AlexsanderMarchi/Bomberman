@@ -1,3 +1,33 @@
+//Método criador de inimigo
+function Inimigo(forma){
+    this.forma = forma;
+
+    formaInimigo(xi, yi, 10);   //A forma dele
+    andarInimigo();             //A movimentação dele
+}
+
+
+
+
+
+// função que cria a forma do inimigo.
+function formaInimigo(xi, yi, raioi) {
+
+    pincel.fillStyle = 'firebrick';
+    pincel.beginPath();
+    pincel.arc(xi, yi, raioi, 0, 2 * Math.PI);
+    pincel.fill();
+}
+
+// função que cria a movimentação dos inimigos.
+function andarInimigo() {
+
+    xi = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
+    yi = Math.floor(Math.random() * tabela);
+
+    
+}
+ 
 // função que cria o objeto.
 function personagem(posicaox, posicaoy, raio) {
 
@@ -7,6 +37,7 @@ function personagem(posicaox, posicaoy, raio) {
     pincel.fill();
 }
 
+// função que cria a bomba.
 function bomba(xb, yb, raiob) {
 
     pincel.fillStyle = 'firebrick';
@@ -15,23 +46,17 @@ function bomba(xb, yb, raiob) {
     pincel.fill();
 }
 
+function criarParede(parede1, raiop) {
 
-function inimigo(xi, yi, raioi) {
-
+    for (var i=0; i < parede1.length; i ++){
     pincel.fillStyle = 'firebrick';
     pincel.beginPath();
-    pincel.arc(xi, yi, raioi, 0, 2 * Math.PI);
+    pincel.arc(parede1[i][0], parede1[i][1], raio, 0, 2 * Math.PI);
     pincel.fill();
+    }
 }
 
-function andarInimigo() {
 
-    xi = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
-    yi = Math.floor(Math.random() * tabela);
-
-    
-}
-            
 // função que desenha o grid.
 function limpaTela() {
     var descer = 0; 
@@ -59,9 +84,10 @@ function atualizaTela() {
 
     bomba(xb, yb, 10)
 
-    inimigo(xi, yi, 10);
-
-    //andarInimigo();
+    new Inimigo();
+    
+    
+    
     
 }
 
@@ -112,12 +138,12 @@ var direita = 39;
 var baixo = 40;
 var espaco = 32;
 
-var parede = [];
+var parede1 = [[37.5,37.5],[],[],[]];
 // Quantidade de pixel que o objeto se movimenta.
 var espacoAndar = 25;
 
 var tabela = 450;
 
-setInterval(atualizaTela, 400); // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
+setInterval(atualizaTela, 20); // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
 
 document.onkeydown = leDoTeclado;
