@@ -3,7 +3,7 @@ function Inimigo(forma){
     this.forma = forma;
 
     formaInimigo(xi, yi, 10);   //A forma dele
-    andarInimigo();             //A movimentação dele
+   // andarInimigo();             //A movimentação dele
 }
 
 
@@ -51,7 +51,7 @@ function criarParede(parede1, raiop) {
     for (var i=0; i < parede1.length; i ++){
     pincel.fillStyle = 'firebrick';
     pincel.beginPath();
-    pincel.arc(parede1[i][0], parede1[i][1], raio, 0, 2 * Math.PI);
+    pincel.arc(parede1[i][0], parede1[i][1], raiop, 0, 2 * Math.PI);
     pincel.fill();
     }
 }

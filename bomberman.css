@@ -1,0 +1,16 @@
+body{
+    background-color: #224422;
+    text-align: center;
+    }
+
+#tela{
+    background-color: black;
+    border: 4px solid #d3d3d3;
+}
+
+button{
+    background-color:rgb(211, 211, 186);
+    color: black;
+}
+
+
