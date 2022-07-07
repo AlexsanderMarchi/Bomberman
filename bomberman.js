@@ -3,10 +3,8 @@ function Inimigo(forma){
     this.forma = forma;
 
     formaInimigo(xi, yi, 10);   //A forma dele
-   // andarInimigo();             //A movimentação dele
+    andarInimigo();             //A movimentação dele
 }
-
-
 
 
 
@@ -22,9 +20,57 @@ function formaInimigo(xi, yi, raioi) {
 // função que cria a movimentação dos inimigos.
 function andarInimigo() {
 
-    xi = Math.floor(Math.random() * tabela); //método para aparecer em outra posição dentro da tabela
-    yi = Math.floor(Math.random() * tabela);
+    /*
+    Contador para fazer o ciclo de movimentação, no caso a cada 20 milésimos de segundos,
+    a tela é reiniciada, e tambem é somada 50 ao contador, e quando chega a 2000 (2 segundos),
+    ele move o personagem.
+    */
+    contadorInimigo += 50;
 
+    if(contadorInimigo === 2000){
+    
+    //método para definir se a direção é horizontal ou vertical
+    var direcaoXorY = Math.floor(Math.random() * 2); 
+
+    var direcaoX = Math.floor(Math.random() * 2); //método para definir qual direção ele vai na horizontal.
+    var direcaoY = Math.floor(Math.random() * 2); //método para definir qual direção ele vai na vertical.
+    
+    /*
+    direcaoXorY = 0 <- horizontal
+    direcaoXorY = 1 <- vertical
+
+    Depois de selecionado se é horizontal ou vertical, ele define se ele vai para tras ou para frente.
+    direcaoX = 0 <- esquerda
+    direcaoX = 1 <- direita
+    direcaoY = 0 <- cima
+    direcaoY = 1 <- baixo
+    */
+
+    //Inimigo indo para a esquerda
+    if (direcaoX === 0 && direcaoXorY === 0 && xi > 25){
+        xi = xi - 25;  
+    }
+    //Inimigo indo para a direita
+    if (direcaoX === 1 && direcaoXorY === 0 && xi < tabela- 25){
+        xi = xi + 25;  
+    }
+    //Inimigo indo para cima
+    if (direcaoY === 0 && direcaoXorY === 1 && yi > 25){
+        yi = yi - 25;  
+    }
+    //Inimigo indo para baixo
+    if (direcaoY === 1 && direcaoXorY === 1 && yi < tabela - 25){
+        yi = yi + 25;  
+    }
+    
+    //Consoles para verificação da movimentação.
+    console.log(direcaoXorY + " <- XorY");
+    console.log(direcaoX + " <- X");
+    console.log(direcaoY + " <- Y");
+    
+    //Depois de atingir 2000 (2 segundos), ele reinicia.
+    contadorInimigo = 0;
+    }
     
 }
  
@@ -53,6 +99,9 @@ function criarParede(parede1, raiop) {
     pincel.beginPath();
     pincel.arc(parede1[i][0], parede1[i][1], raiop, 0, 2 * Math.PI);
     pincel.fill();
+
+    //parede1[i][0] += 25;
+
     }
 }
 
@@ -86,7 +135,7 @@ function atualizaTela() {
 
     new Inimigo();
     
-    
+    criarParede(parede1, 10);
     
     
 }
@@ -121,6 +170,7 @@ function leDoTeclado(evento) {
 var xi = 412.5;
 var yi = 412.5;
 
+// Váriaveis usadas para definir a posição da bomba quando solta.
 var xb;
 var yb;
 
@@ -138,9 +188,15 @@ var direita = 39;
 var baixo = 40;
 var espaco = 32;
 
-var parede1 = [[37.5,37.5],[],[],[]];
+var parede1 = [[37.5,37.5],[],[],[],[]];
+
+//var parede1 = [[37.5,37.5],[62.5,37.5],[87.5,37.5],[112.5,37.5],[137.5,37.5]];
+
+
 // Quantidade de pixel que o objeto se movimenta.
 var espacoAndar = 25;
+
+var contadorInimigo = 0;
 
 var tabela = 450;
 
