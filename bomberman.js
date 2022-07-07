@@ -94,15 +94,26 @@ function bomba(xb, yb, raiob) {
 
 function criarParede(parede1, raiop) {
 
+    for(var i = 1; i<=parede1.length-1;i++){
+
+        if(i>=1) parede1[i] = [];
+       
+
+
+        parede1[i][0] = parede1[i-1][0]+ 25;
+        parede1[i][1] = 37.5; 
+
+    }
+
     for (var i=0; i < parede1.length; i ++){
     pincel.fillStyle = 'firebrick';
     pincel.beginPath();
     pincel.arc(parede1[i][0], parede1[i][1], raiop, 0, 2 * Math.PI);
     pincel.fill();
 
-    //parede1[i][0] += 25;
-
     }
+
+
 }
 
 
@@ -136,6 +147,7 @@ function atualizaTela() {
     new Inimigo();
     
     criarParede(parede1, 10);
+    
     
     
 }
@@ -188,9 +200,13 @@ var direita = 39;
 var baixo = 40;
 var espaco = 32;
 
-var parede1 = [[37.5,37.5],[],[],[],[]];
 
-//var parede1 = [[37.5,37.5],[62.5,37.5],[87.5,37.5],[112.5,37.5],[137.5,37.5]];
+
+
+//Vetor para criar a parede, foi usado new Array para poder definir o tamanho do vetor.
+var parede1 = new Array(14);
+parede1[0] = [37.5,37.5]
+
 
 
 // Quantidade de pixel que o objeto se movimenta.
