@@ -1,3 +1,23 @@
+
+// função que cria o personagem jogavel.
+function personagem(posicaox, posicaoy, raio) {
+
+    pincel.fillStyle = 'black';
+    pincel.beginPath();
+    pincel.arc(posicaox, posicaoy, raio, 0, 2 * Math.PI);
+    pincel.fill();
+}
+
+// função que cria a bomba.
+function bomba(xb, yb, raiob) {
+
+    pincel.fillStyle = 'firebrick';
+    pincel.beginPath();
+    pincel.arc(xb, yb, raiob, 0, 2 * Math.PI);
+    pincel.fill();
+}
+
+
 //Método criador de inimigo
 function Inimigo(forma){
     this.forma = forma;
@@ -11,7 +31,7 @@ function Inimigo(forma){
 // função que cria a forma do inimigo.
 function formaInimigo(xi, yi, raioi) {
 
-    pincel.fillStyle = 'firebrick';
+    pincel.fillStyle = 'black';
     pincel.beginPath();
     pincel.arc(xi, yi, raioi, 0, 2 * Math.PI);
     pincel.fill();
@@ -74,42 +94,43 @@ function andarInimigo() {
     
 }
  
-// função que cria o objeto.
-function personagem(posicaox, posicaoy, raio) {
+function colisao(){
 
-    pincel.fillStyle = 'black';
-    pincel.beginPath();
-    pincel.arc(posicaox, posicaoy, raio, 0, 2 * Math.PI);
-    pincel.fill();
-}
-
-// função que cria a bomba.
-function bomba(xb, yb, raiob) {
-
-    pincel.fillStyle = 'firebrick';
-    pincel.beginPath();
-    pincel.arc(xb, yb, raiob, 0, 2 * Math.PI);
-    pincel.fill();
+    //Assim que o personagem encosta no inimigo, a pagina da um reload, como se tivesse perdido o jogo.
+    if(posicaox === xi && posicaoy === yi){
+        document.location.reload(true);
+    }
 }
 
 function criarParede(parede1, raiop) {
 
     for(var i = 1; i<=parede1.length-1;i++){
 
+
         if(i>=1) parede1[i] = [];
-       
-
-
+        parede1[i][2] = true;
+        
         parede1[i][0] = parede1[i-1][0]+ 25;
-        parede1[i][1] = 37.5; 
+        parede1[i][1] = parede1[i-1][1]; 
+        
+        if(parede1[i][0] === tabela + 12.5){
+            parede1[i][0] = 12.5;
+            parede1[i][1] += 25; 
+        }
+        
+
+        parede1[2][2] = false;
 
     }
 
     for (var i=0; i < parede1.length; i ++){
-    pincel.fillStyle = 'firebrick';
-    pincel.beginPath();
-    pincel.arc(parede1[i][0], parede1[i][1], raiop, 0, 2 * Math.PI);
-    pincel.fill();
+
+        if(parede1[i][2]){
+            pincel.fillStyle = 'firebrick';
+            pincel.beginPath();
+            pincel.arc(parede1[i][0], parede1[i][1], raiop, 0, 2 * Math.PI);
+            pincel.fill();
+        }
 
     }
 
@@ -148,7 +169,7 @@ function atualizaTela() {
     
     criarParede(parede1, 10);
     
-    
+    colisao();
     
 }
 
@@ -157,7 +178,14 @@ function atualizaTela() {
 function leDoTeclado(evento) {
 
     if(evento.keyCode == cima && posicaoy - espacoAndar > 0) {
+
         posicaoy = posicaoy - espacoAndar;
+        /*for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(posicaox != parede1[i][0] && posicaoy != parede1[i][1]){
+                posicaoy = posicaoy - espacoAndar;
+            }
+        }*/
 
     } else if (evento.keyCode == baixo && posicaoy + espacoAndar < 450) {
         posicaoy = posicaoy + espacoAndar;
@@ -178,7 +206,7 @@ function leDoTeclado(evento) {
 
 
 
-// Váriaveis que define a posição inicial da maçã verde.
+// Váriaveis que define a posição inicial do inimigo.
 var xi = 412.5;
 var yi = 412.5;
 
@@ -189,7 +217,7 @@ var yb;
 var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
 var pincel = tela.getContext('2d'); // Váriavel usada para pintar na tela.
 
-// Váriavel que define a posição do objeto.
+// Váriavel que define a posição do bomberman.
 var posicaox = 12.5;
 var posicaoy = 12.5;
 
@@ -204,8 +232,8 @@ var espaco = 32;
 
 
 //Vetor para criar a parede, foi usado new Array para poder definir o tamanho do vetor.
-var parede1 = new Array(14);
-parede1[0] = [37.5,37.5]
+var parede1 = new Array(150);
+parede1[0] = [62.5,12.5, true];
 
 
 
