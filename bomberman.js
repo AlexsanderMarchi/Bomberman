@@ -8,6 +8,63 @@ function personagem(posicaox, posicaoy, raio) {
     pincel.fill();
 }
 
+// função que determina pra onde o personagem irá se movimentar.
+function movimentoPersonagem(evento) {
+
+    //Para cima
+    if(evento.keyCode == cima && posicaoy - espacoAndar > 0) {
+
+        posicaoy = posicaoy - espacoAndar;
+
+        //repetição caso tiver uma parede em cima do personagem.
+        for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2]){
+                posicaoy += espacoAndar; 
+            }
+        }
+    
+    //Para baixo
+    } else if (evento.keyCode == baixo && posicaoy + espacoAndar < 450) {
+        posicaoy = posicaoy + espacoAndar;
+
+        for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2]){
+                posicaoy -= espacoAndar; 
+            }
+        }
+
+    //para esquerda
+    } else if (evento.keyCode == esquerda && posicaox - espacoAndar > 0) {
+        posicaox = posicaox - espacoAndar;
+
+        for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2]){
+                posicaox += espacoAndar; 
+            }
+        }
+    
+    //Para direita
+    } else if (evento.keyCode == direita && posicaox + espacoAndar < 450) {
+        posicaox = posicaox + espacoAndar;
+
+        for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2]){
+                posicaox -= espacoAndar; 
+            }
+        }
+    }
+
+    //condição que solta a bomba
+    if(evento.keyCode == espaco){
+        xb = posicaox;
+        yb = posicaoy;
+    }
+}
+
 // função que cria a bomba.
 function bomba(xb, yb, raiob) {
 
@@ -15,6 +72,29 @@ function bomba(xb, yb, raiob) {
     pincel.beginPath();
     pincel.arc(xb, yb, raiob, 0, 2 * Math.PI);
     pincel.fill();
+}
+
+// função com o funcionamento da bomba.
+function raioBomba() {
+
+    
+    contadorBomba += 50
+
+    if(contadorBomba === 8000){
+        xb = undefined;
+        yb = undefined;
+
+        /*for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(xb+25 === parede1[i][0] && yb === parede1[i][1]){
+                parede1[i][2] = false;
+            }
+        }*/
+        
+    contadorBomba = 0;
+    }
+    
+
 }
 
 
@@ -31,7 +111,7 @@ function Inimigo(forma){
 // função que cria a forma do inimigo.
 function formaInimigo(xi, yi, raioi) {
 
-    pincel.fillStyle = 'black';
+    pincel.fillStyle = 'purple';
     pincel.beginPath();
     pincel.arc(xi, yi, raioi, 0, 2 * Math.PI);
     pincel.fill();
@@ -69,18 +149,46 @@ function andarInimigo() {
     //Inimigo indo para a esquerda
     if (direcaoX === 0 && direcaoXorY === 0 && xi > 25){
         xi = xi - 25;  
+
+        for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(xi === parede1[i][0] && yi === parede1[i][1] && parede1[i][2]){
+                xi += espacoAndar; 
+            }
+        }
     }
     //Inimigo indo para a direita
     if (direcaoX === 1 && direcaoXorY === 0 && xi < tabela- 25){
         xi = xi + 25;  
+
+        for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(xi === parede1[i][0] && yi === parede1[i][1] && parede1[i][2]){
+                xi -= espacoAndar; 
+            }
+        }
     }
     //Inimigo indo para cima
     if (direcaoY === 0 && direcaoXorY === 1 && yi > 25){
-        yi = yi - 25;  
+        yi = yi - 25; 
+        
+        for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(xi === parede1[i][0] && yi === parede1[i][1] && parede1[i][2]){
+                yi += espacoAndar; 
+            }
+        }
     }
     //Inimigo indo para baixo
     if (direcaoY === 1 && direcaoXorY === 1 && yi < tabela - 25){
-        yi = yi + 25;  
+        yi = yi + 25; 
+        
+        for(var i = 0; i<=parede1.length-1;i++){
+            
+            if(xi === parede1[i][0] && yi === parede1[i][1] && parede1[i][2]){
+                yi -= espacoAndar; 
+            }
+        }
     }
     
     //Consoles para verificação da movimentação.
@@ -104,6 +212,7 @@ function colisao(){
 
 function criarParede(parede1, raiop) {
 
+    //Repetição que cria os vetores da parede.
     for(var i = 1; i<=parede1.length-1;i++){
 
 
@@ -113,20 +222,23 @@ function criarParede(parede1, raiop) {
         parede1[i][0] = parede1[i-1][0]+ 25;
         parede1[i][1] = parede1[i-1][1]; 
         
+        //Condição para fazer a parede pular uma linha abaixo quando chega na extremidade direita.
         if(parede1[i][0] === tabela + 12.5){
             parede1[i][0] = 12.5;
             parede1[i][1] += 25; 
         }
-        
-
-        parede1[2][2] = false;
-
+    
     }
 
+    //lugares onde nao é criado a parede, pois foi mudado para false
+    parede1[25][2] = parede1[16][2] = parede1[300][2] = parede1[34][2] = parede1[36][2]= false;
+
+    //Repetição que cria o formato da parede.
     for (var i=0; i < parede1.length; i ++){
 
-        if(parede1[i][2]){
-            pincel.fillStyle = 'firebrick';
+        //Só vai criar o formato da parede se a terceira posição de cada vetor for true;
+        if(parede1[i][2] === true){
+            pincel.fillStyle = 'green';
             pincel.beginPath();
             pincel.arc(parede1[i][0], parede1[i][1], raiop, 0, 2 * Math.PI);
             pincel.fill();
@@ -134,6 +246,7 @@ function criarParede(parede1, raiop) {
 
     }
 
+    
 
 }
 
@@ -156,14 +269,16 @@ function limpaTela() {
     }    
 }
 
-// função para atualizar a tela, desenhando o grid e o objeto.
+// função para atualizar a tela.
 function atualizaTela() {
 
     limpaTela();
    
     personagem(posicaox, posicaoy, 10);
 
-    bomba(xb, yb, 10)
+    bomba(xb, yb, 10);
+
+    raioBomba();
 
     new Inimigo();
     
@@ -174,45 +289,16 @@ function atualizaTela() {
 }
 
 
-// função que determina pra onde o objeto irá se movimentar.
-function leDoTeclado(evento) {
-
-    if(evento.keyCode == cima && posicaoy - espacoAndar > 0) {
-
-        posicaoy = posicaoy - espacoAndar;
-        /*for(var i = 0; i<=parede1.length-1;i++){
-            
-            if(posicaox != parede1[i][0] && posicaoy != parede1[i][1]){
-                posicaoy = posicaoy - espacoAndar;
-            }
-        }*/
-
-    } else if (evento.keyCode == baixo && posicaoy + espacoAndar < 450) {
-        posicaoy = posicaoy + espacoAndar;
-
-    } else if (evento.keyCode == esquerda && posicaox - espacoAndar > 0) {
-        posicaox = posicaox - espacoAndar;
-
-    } else if (evento.keyCode == direita && posicaox + espacoAndar < 450) {
-        posicaox = posicaox + espacoAndar;
-    }
-
-    if(evento.keyCode == espaco){
-        xb = posicaox;
-        yb = posicaoy;
-    }
-}
-
-
-
-
 // Váriaveis que define a posição inicial do inimigo.
 var xi = 412.5;
-var yi = 412.5;
+var yi = 437.5;
 
 // Váriaveis usadas para definir a posição da bomba quando solta.
 var xb;
 var yb;
+
+//Contador bomba
+var contadorBomba = 0;
 
 var tela = document.querySelector('canvas'); // Váriavel que seleciona a tela.
 var pincel = tela.getContext('2d'); // Váriavel usada para pintar na tela.
@@ -232,7 +318,7 @@ var espaco = 32;
 
 
 //Vetor para criar a parede, foi usado new Array para poder definir o tamanho do vetor.
-var parede1 = new Array(150);
+var parede1 = new Array(312);
 parede1[0] = [62.5,12.5, true];
 
 
@@ -240,10 +326,11 @@ parede1[0] = [62.5,12.5, true];
 // Quantidade de pixel que o objeto se movimenta.
 var espacoAndar = 25;
 
+//contador para fazer o ciclo do inimigo para se movimentar.
 var contadorInimigo = 0;
 
 var tabela = 450;
 
 setInterval(atualizaTela, 20); // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
 
-document.onkeydown = leDoTeclado;
+document.onkeydown = movimentoPersonagem;
