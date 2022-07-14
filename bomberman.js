@@ -12,47 +12,51 @@ function personagem(posicaox, posicaoy, raio) {
 function movimentoPersonagem(evento) {
 
     //Para cima
-    if(evento.keyCode == cima && posicaoy - espacoAndar > 0) {
+    if(evento.keyCode == cima && posicaoy - espacoAndar > 0 ) {
 
         posicaoy = posicaoy - espacoAndar;
 
         //repetição caso tiver uma parede em cima do personagem.
         for(var i = 0; i<=parede1.length-1;i++){
             
-            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2]){
+            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2] ||
+                posicaoy === yb && posicaox === xb){
                 posicaoy += espacoAndar; 
             }
         }
     
     //Para baixo
-    } else if (evento.keyCode == baixo && posicaoy + espacoAndar < 450) {
+    } else if (evento.keyCode == baixo && posicaoy + espacoAndar < 450 ) {
         posicaoy = posicaoy + espacoAndar;
 
         for(var i = 0; i<=parede1.length-1;i++){
             
-            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2]){
+            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2] ||
+                posicaoy === yb && posicaox === xb){
                 posicaoy -= espacoAndar; 
             }
         }
 
     //para esquerda
-    } else if (evento.keyCode == esquerda && posicaox - espacoAndar > 0) {
+    } else if (evento.keyCode == esquerda && posicaox - espacoAndar > 0 ) {
         posicaox = posicaox - espacoAndar;
 
         for(var i = 0; i<=parede1.length-1;i++){
             
-            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2]){
+            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2] ||
+                posicaoy === yb && posicaox === xb){
                 posicaox += espacoAndar; 
             }
         }
     
     //Para direita
-    } else if (evento.keyCode == direita && posicaox + espacoAndar < 450) {
+    } else if (evento.keyCode == direita && posicaox + espacoAndar < 450 ) {
         posicaox = posicaox + espacoAndar;
 
         for(var i = 0; i<=parede1.length-1;i++){
             
-            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2]){
+            if(posicaox === parede1[i][0] && posicaoy === parede1[i][1] && parede1[i][2] ||
+                posicaoy === yb && posicaox === xb){
                 posicaox -= espacoAndar; 
             }
         }
@@ -60,8 +64,22 @@ function movimentoPersonagem(evento) {
 
     //condição que solta a bomba
     if(evento.keyCode == espaco){
-        xb = posicaox;
-        yb = posicaoy;
+
+        //condição para poder colocar a bomba apenas quando ela ja não tiver no jogo.
+        if(xb === undefined && yb === undefined){
+            xb = posicaox;
+            yb = posicaoy;
+
+
+            //Repetição para destruir paredes
+            for(var i = 0; i<=parede1.length;i++){
+            
+                if(xb+25 === parede1[i][0] && yb === parede1[i][1]){
+                    parede1[i][2] = false;
+                }
+            }
+        }
+        
     }
 }
 
@@ -84,15 +102,10 @@ function raioBomba() {
         xb = undefined;
         yb = undefined;
 
-        /*for(var i = 0; i<=parede1.length-1;i++){
-            
-            if(xb+25 === parede1[i][0] && yb === parede1[i][1]){
-                parede1[i][2] = false;
-            }
-        }*/
-        
+
     contadorBomba = 0;
     }
+    
     
 
 }
