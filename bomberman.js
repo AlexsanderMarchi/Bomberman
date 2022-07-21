@@ -70,13 +70,23 @@ function movimentoPersonagem(evento) {
             xb = posicaox;
             yb = posicaoy;
 
-
+            console.log("Antes :"+yb +" "+ xb)
             //Repetição para destruir paredes
-            for(var i = 0; i<=parede1.length;i++){
-            
+
+
+            for(var i = 0; i<=parede1.length-1;i++){
+
+                //console.log("X e Y: "+xb+" "+yb);
+                //console.log(" " +i +" " +parede1[i][0] +" " + parede1[i][1]);
                 if(xb+25 === parede1[i][0] && yb === parede1[i][1]){
+                    
+                    console.log("chegou no if"+i);
+                    
                     parede1[i][2] = false;
                 }
+                
+
+
             }
         }
         
@@ -223,7 +233,7 @@ function colisao(){
     }
 }
 
-function criarParede(parede1, raiop) {
+function criarParede() {
 
     //Repetição que cria os vetores da parede.
     for(var i = 1; i<=parede1.length-1;i++){
@@ -231,6 +241,8 @@ function criarParede(parede1, raiop) {
 
         if(i>=1) parede1[i] = [];
         parede1[i][2] = true;
+
+        
         
         parede1[i][0] = parede1[i-1][0]+ 25;
         parede1[i][1] = parede1[i-1][1]; 
@@ -239,29 +251,39 @@ function criarParede(parede1, raiop) {
         if(parede1[i][0] === tabela + 12.5){
             parede1[i][0] = 12.5;
             parede1[i][1] += 25; 
+            
         }
     
     }
+
 
     //lugares onde nao é criado a parede, pois foi mudado para false
     parede1[25][2] = parede1[16][2] = parede1[300][2] = parede1[34][2] = parede1[36][2]= false;
 
-    //Repetição que cria o formato da parede.
+    //Repetição que cria o formato da parede
+    
+
+}
+
+
+function desenharParede(raiop){ 
     for (var i=0; i < parede1.length; i ++){
 
         //Só vai criar o formato da parede se a terceira posição de cada vetor for true;
-        if(parede1[i][2] === true){
+        if(parede1[i][2]){
             pincel.fillStyle = 'green';
             pincel.beginPath();
             pincel.arc(parede1[i][0], parede1[i][1], raiop, 0, 2 * Math.PI);
             pincel.fill();
+
+
         }
 
     }
 
-    
 
 }
+
 
 
 // função que desenha o grid.
@@ -286,6 +308,8 @@ function limpaTela() {
 function atualizaTela() {
 
     limpaTela();
+
+    //console.log(parede1);
    
     personagem(posicaox, posicaoy, 10);
 
@@ -295,7 +319,11 @@ function atualizaTela() {
 
     new Inimigo();
     
-    criarParede(parede1, 10);
+
+
+    desenharParede(10);
+
+    
     
     colisao();
     
@@ -343,6 +371,9 @@ var espacoAndar = 25;
 var contadorInimigo = 0;
 
 var tabela = 450;
+
+
+criarParede(10);
 
 setInterval(atualizaTela, 20); // função para chamar o "atualizaTela" em um intervalo de tempo dado como segundo parâmetro.
 
