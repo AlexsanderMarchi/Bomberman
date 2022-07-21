@@ -84,6 +84,24 @@ function movimentoPersonagem(evento) {
                     
                     parede1[i][2] = false;
                 }
+                if(xb-25 === parede1[i][0] && yb === parede1[i][1]){
+                    
+                    console.log("chegou no if"+i);
+                    
+                    parede1[i][2] = false;
+                }
+                if(xb === parede1[i][0] && yb+25 === parede1[i][1]){
+                    
+                    console.log("chegou no if"+i);
+                    
+                    parede1[i][2] = false;
+                }
+                if(xb === parede1[i][0] && yb-25 === parede1[i][1]){
+                    
+                    console.log("chegou no if"+i);
+                    
+                    parede1[i][2] = false;
+                }
                 
 
 
