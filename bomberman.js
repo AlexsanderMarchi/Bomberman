@@ -1,5 +1,7 @@
 
-// função que cria o personagem jogavel.
+//PERSONAGEM BOMBERMAN
+
+// função que cria a imagem do personagem jogavel.
 function personagem(posicaox, posicaoy, raio) {
 
     pincel.fillStyle = 'black';
@@ -8,7 +10,7 @@ function personagem(posicaox, posicaoy, raio) {
     pincel.fill();
 }
 
-// função que determina pra onde o personagem irá se movimentar.
+// função que determina pra onde o personagem irá se movimentar e soltar bomba, usando o teclado.
 function movimentoPersonagem(evento) {
 
     //Para cima
@@ -68,50 +70,16 @@ function movimentoPersonagem(evento) {
         //condição para poder colocar a bomba apenas quando ela ja não tiver no jogo.
         if(xb === undefined && yb === undefined){
             xb = posicaox;
-            yb = posicaoy;
-
-            console.log("Antes :"+yb +" "+ xb)
-            //Repetição para destruir paredes
-
-
-            for(var i = 0; i<=parede1.length-1;i++){
-
-                //console.log("X e Y: "+xb+" "+yb);
-                //console.log(" " +i +" " +parede1[i][0] +" " + parede1[i][1]);
-                if(xb+25 === parede1[i][0] && yb === parede1[i][1]){
-                    
-                    console.log("chegou no if"+i);
-                    
-                    parede1[i][2] = false;
-                }
-                if(xb-25 === parede1[i][0] && yb === parede1[i][1]){
-                    
-                    console.log("chegou no if"+i);
-                    
-                    parede1[i][2] = false;
-                }
-                if(xb === parede1[i][0] && yb+25 === parede1[i][1]){
-                    
-                    console.log("chegou no if"+i);
-                    
-                    parede1[i][2] = false;
-                }
-                if(xb === parede1[i][0] && yb-25 === parede1[i][1]){
-                    
-                    console.log("chegou no if"+i);
-                    
-                    parede1[i][2] = false;
-                }
-                
-
-
-            }
+            yb = posicaoy;   
         }
         
     }
 }
 
-// função que cria a bomba.
+
+//BOMBA//
+
+// função que cria a imagem da bomba.
 function bomba(xb, yb, raiob) {
 
     pincel.fillStyle = 'firebrick';
@@ -127,17 +95,50 @@ function raioBomba() {
     contadorBomba += 50
 
     if(contadorBomba === 8000){
+
+        for(var i = 0; i<=parede1.length-1;i++){
+
+            //console.log("X e Y: "+xb+" "+yb);
+            //console.log(" " +i +" " +parede1[i][0] +" " + parede1[i][1]);
+            if(xb+25 === parede1[i][0] && yb === parede1[i][1]){
+                
+                console.log("chegou no if"+i);
+                
+                parede1[i][2] = false;
+            }
+            if(xb-25 === parede1[i][0] && yb === parede1[i][1]){
+                
+                console.log("chegou no if"+i);
+                
+                parede1[i][2] = false;
+            }
+            if(xb === parede1[i][0] && yb+25 === parede1[i][1]){
+                
+                console.log("chegou no if"+i);
+                
+                parede1[i][2] = false;
+            }
+            if(xb === parede1[i][0] && yb-25 === parede1[i][1]){
+                
+                console.log("chegou no if"+i);
+                
+                parede1[i][2] = false;
+            }
+            
+        }
         xb = undefined;
         yb = undefined;
 
 
     contadorBomba = 0;
     }
-    
-    
 
+
+    
+    
 }
 
+//INIMIGO
 
 //Método criador de inimigo
 function Inimigo(forma){
@@ -158,7 +159,7 @@ function formaInimigo(xi, yi, raioi) {
     pincel.fill();
 }
 
-// função que cria a movimentação dos inimigos.
+// função que cria a movimentação e a colisão do inimigo.
 function andarInimigo() {
 
     /*
@@ -231,6 +232,11 @@ function andarInimigo() {
             }
         }
     }
+
+    //Assim que o personagem encosta no inimigo, a pagina da um reload, como se tivesse perdido o jogo.
+    if(posicaox === xi && posicaoy === yi){
+        document.location.reload(true);
+    }
     
     //Consoles para verificação da movimentação.
     console.log(direcaoXorY + " <- XorY");
@@ -243,13 +249,6 @@ function andarInimigo() {
     
 }
  
-function colisao(){
-
-    //Assim que o personagem encosta no inimigo, a pagina da um reload, como se tivesse perdido o jogo.
-    if(posicaox === xi && posicaoy === yi){
-        document.location.reload(true);
-    }
-}
 
 function criarParede() {
 
@@ -333,15 +332,11 @@ function atualizaTela() {
 
     bomba(xb, yb, 10);
 
+    desenharParede(10);
+
     raioBomba();
 
     new Inimigo();
-    
-
-
-    desenharParede(10);
-
-    
     
     colisao();
     
